@@ -77,7 +77,7 @@ def add_movement(main_board=None, g_board=None, turn=player):
     row, col = convert_pos_to_idx()
     if board[col][row] != 'S' and board[col][row] != 'P':
         board[col][row] = turn
-        if player == 'S':
+        if turn == 'S':
             turn = 'P'
         else:
             turn = 'S'
