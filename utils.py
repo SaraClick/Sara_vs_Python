@@ -31,7 +31,7 @@ screen = pygame.display.set_mode(size)
 screen.fill(color_background)
 
 
-def grid_generator(screen_max = width, box_size=round((width/3))):
+def grid_generator(screen_max=width, box_size=round((width/3))):
     """Given a board, generates a grid to have a board with 3x3 boxes"""
     for i in range(0, screen_max, box_size):
         pygame.draw.line(screen, color_board, (0, i), (screen_max, i), grid_width)  # screen, color, start, end, width
@@ -46,6 +46,7 @@ def render_board(main_board=None, s_img=sara, p_img=python):
     for i in range(3):
         for j in range(3):
             if main_board[i][j] == "S":
+                # REFERENCE: graph_board[row][col][0] is the image, graph_board[row][col][1] is the center of the box
                 graph_board[i][j][0] = s_img
                 graph_board[i][j][1] = s_img.get_rect(center=(j*200+100, i*200+100))
                 # center = center within the square cell
@@ -76,25 +77,23 @@ def add_movement(main_board=None, g_board=None, turn=player):
     if g_board is None:
         g_board = graph_board
     row, col = convert_pos_to_idx()
-    if board[row][col] != 'S' and board[row][col] != 'P':
-        board[row][col] = turn
+    if main_board[row][col] != 'S' and main_board[row][col] != 'P':
+        main_board[row][col] = turn
         if turn == 'S':
             turn = 'P'
         else:
             turn = 'S'
 
-    render_board(board, sara, python)  # updates the movement to the graph_board
+    render_board(main_board, sara, python)  # updates the movement to the graph_board
 
     # Display the sara/python images on top of the board
     for i in range(3):
         for j in range(3):
-            if graph_board[i][j][0] is not None:
-                screen.blit(graph_board[i][j][0], graph_board[i][j][1])
+            if g_board[i][j][0] is not None:
+                screen.blit(g_board[i][j][0], g_board[i][j][1])
 
     return board, turn
 
 
-def check_winner(main_board=None):
-    if main_board is None:
-        main_board = board
-
+def check_winner():
+    pass

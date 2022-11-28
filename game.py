@@ -1,8 +1,6 @@
 import pygame
 import sys
-from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, width, \
-    check_winner
-from random import randint
+from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner
 
 
 pygame.init()
@@ -36,10 +34,10 @@ while True:
 
                 screen.fill(color_background)
                 pygame.display.update()
-                grid_generator(screen_max=width, box_size=round((width/3)))
+                grid_generator()
                 pygame.display.update()
 
-            if check_winner(board):
+            if check_winner():
                 game_finished = True
 
             pygame.display.update()
