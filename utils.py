@@ -60,10 +60,11 @@ def render_board(main_board=None, s_img=sara, p_img=python):
 def convert_pos_to_idx():
     """Given position of mouse click within the board returns the [row][col] equivalent index within board"""
     mouse_position = pygame.mouse.get_pos()  # tuple with positions (x,y)
+    # NOTE: X corresponds to the column value and Y to the row value
     # convert mouse position tuple onto indexes of board 0-5 for rows and cols
     ratio = 0.00497  # max X value for row[0] = 199. Then:  199 * ratio = 0.999
-    row_idx = int(mouse_position[0] * ratio)  # converts position onto row index
-    col_idx = int(mouse_position[1] * ratio)  # converts position onto col index
+    row_idx = int(mouse_position[1] * ratio)  # converts position X onto row index
+    col_idx = int(mouse_position[0] * ratio)  # converts position Y onto col index
     return row_idx, col_idx
 
 
@@ -75,8 +76,8 @@ def add_movement(main_board=None, g_board=None, turn=player):
     if g_board is None:
         g_board = graph_board
     row, col = convert_pos_to_idx()
-    if board[col][row] != 'S' and board[col][row] != 'P':
-        board[col][row] = turn
+    if board[row][col] != 'S' and board[row][col] != 'P':
+        board[row][col] = turn
         if turn == 'S':
             turn = 'P'
         else:
@@ -91,3 +92,9 @@ def add_movement(main_board=None, g_board=None, turn=player):
                 screen.blit(graph_board[i][j][0], graph_board[i][j][1])
 
     return board, turn
+
+
+def check_winner(main_board=None):
+    if main_board is None:
+        main_board = board
+
