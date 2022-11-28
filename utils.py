@@ -32,6 +32,7 @@ screen.fill(color_background)
 
 
 def grid_generator(screen_max = width, box_size=round((width/3))):
+    """Given a board, generates a grid to have a board with 3x3 boxes"""
     for i in range(0, screen_max, box_size):
         pygame.draw.line(screen, color_board, (0, i), (screen_max, i), grid_width)  # screen, color, start, end, width
         pygame.draw.line(screen, color_board, (i, 0), (i, screen_max), grid_width)  # screen, color, start, end, width
@@ -39,6 +40,7 @@ def grid_generator(screen_max = width, box_size=round((width/3))):
 
 # Rendering board function
 def render_board(main_board=None, s_img=sara, p_img=python):
+    """Given position of mouse click within the board returns the [row][col] equivalent index within board"""
     if main_board is None:  # this is due to main_board being a mutable object
         main_board = board
     for i in range(3):
@@ -67,6 +69,7 @@ def convert_pos_to_idx():
 
 # Create mouse input
 def add_movement(main_board=None, g_board=None, turn=player):
+    """Given a user click, assigns the box selection to the player, renders updated board and returns board & player"""
     if main_board is None:
         main_board = board
     if g_board is None:
@@ -79,9 +82,9 @@ def add_movement(main_board=None, g_board=None, turn=player):
         else:
             turn = 'S'
 
-    render_board(board, sara, python)
+    render_board(board, sara, python)  # updates the movement to the graph_board
 
-    # CHECK THE BELOW
+    # Display the sara/python images on top of the board
     for i in range(3):
         for j in range(3):
             if graph_board[i][j][0] is not None:
