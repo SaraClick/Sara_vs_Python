@@ -1,5 +1,5 @@
 import unittest
-from utils import convert_pos_to_idx, add_movement, check_winner
+from utils import convert_pos_to_idx, check_winner
 
 
 class TestConvertPositionToIndex(unittest.TestCase):
@@ -27,6 +27,36 @@ class TestConvertPositionToIndex(unittest.TestCase):
         self.assertEqual((2, 1), convert_pos_to_idx((200, 400)))
 
 
+class TestCheckWinner(unittest.TestCase):
+    def test_P_row_win(self):
+        board = [["P", "P", "P"],
+                 ["S", 5, 6],
+                 ["S", 8, 9]]
+        self.assertEqual("P", check_winner(board))
+
+    def test_S_col_win(self):
+        board = [["S", "P", "P"],
+                 ["S", 5, 6],
+                 ["S", 8, 9]]
+        self.assertEqual("S", check_winner(board))
+
+    def test_game_unfinished_none_wins(self):
+        board = [[1, "P", "P"],
+                 ["S", 5, 6],
+                 ["S", 8, 9]]
+        self.assertEqual(None, check_winner(board))
+
+    def test_draw_none_wins(self):
+        board = [["S", "P", "P"],
+                 ["P", "S", "S"],
+                 ["S", "S", "P"]]
+        self.assertEqual(None, check_winner(board))
+
+    def test_zero_movements_none_wins(self):
+        board = [[1, 2, 3],
+                 [4, 5, 6],
+                 [5, 8, 9]]
+        self.assertEqual(None, check_winner(board))
 
 if __name__ == '__main__':
     unittest.main()
