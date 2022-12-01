@@ -16,6 +16,8 @@ graph_board = [[[None, None], [None, None], [None, None]],
 # Define images for game
 sara = pygame.image.load("files/sara.png")
 python = pygame.image.load("files/python.png")
+sara_win = pygame.image.load("files/sara_win.png")
+python_win = pygame.image.load("files/python_win.png")
 
 
 # Define screen, grid and caption
@@ -129,5 +131,23 @@ def check_winner(board_arr):
             return winner, winner_idx
         else:
             col += 1
+
+
+def replace_winner_img(winner, winner_indexes):
+    img_winner = sara_win
+    if winner == "P":
+        img_winner = python_win
+
+    for idx in winner_indexes:
+        graph_board[idx[0]][idx[1]][0] = img_winner
+
+    # Display the updated images on the board
+    for i in range(3):
+        for j in range(3):
+            if graph_board[i][j][0] is not None:
+                screen.blit(graph_board[i][j][0], graph_board[i][j][1])
+
+
+
 
 
