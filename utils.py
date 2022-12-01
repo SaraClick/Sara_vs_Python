@@ -62,7 +62,7 @@ def convert_pos_to_idx(position):  # position is a tuple (x,y) obtained with pyg
     """Given position of mouse click within the board returns the [row][col] equivalent index within board"""
     # NOTE: X corresponds to the column value and Y to the row value
     # convert mouse position tuple onto indexes of board 0-5 for rows and cols
-    ratio = 0.00497  # max X value for row[0] = 199. Then:  199 * ratio = 0.999
+    ratio = 0.005  # max X value for row[1] = 200. Then:  200 * ratio = 1 /// row[0] = 199
     row_idx = int(position[1] * ratio)  # converts position X onto row index
     col_idx = int(position[0] * ratio)  # converts position Y onto col index
     return row_idx, col_idx
