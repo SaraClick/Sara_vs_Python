@@ -32,13 +32,13 @@ class TestCheckWinner(unittest.TestCase):
         board = [["P", "P", "P"],
                  ["S", 5, 6],
                  ["S", 8, 9]]
-        self.assertEqual("P", check_winner(board))
+        self.assertEqual(("P", [[0, 0], [0, 1], [0, 2]]), check_winner(board))
 
     def test_S_col_win(self):
         board = [["S", "P", "P"],
                  ["S", 5, 6],
                  ["S", 8, 9]]
-        self.assertEqual("S", check_winner(board))
+        self.assertEqual(("S", [[0, 0], [1, 0], [2,0]]), check_winner(board))
 
     def test_game_unfinished_none_wins(self):
         board = [[1, "P", "P"],

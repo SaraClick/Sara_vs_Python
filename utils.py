@@ -99,10 +99,16 @@ def check_winner(board_arr):
     """Given a board array of [row][cols], checks for 3 of the same input to return winner, if no winner returns None"""
 
     winner = None
+    winner_idx = None
 
-    if board_arr[0][0] == board_arr[1][1] == board_arr[2][2] or board_arr[0][2] == board_arr[1][1] == board_arr[2][0]:
-        winner = board_arr[0][0]
-        return winner
+    if board_arr[0][0] == board_arr[1][1] == board_arr[2][2]:
+        winner = board_arr[1][1]
+        winner_idx = [[0, 0], [1, 1], [2, 2]]
+        return winner, winner_idx
+    if board_arr[0][2] == board_arr[1][1] == board_arr[2][0]:
+        winner = board_arr[1][1]
+        winner_idx = [[0, 2], [1, 1], [2, 0]]
+        return winner, winner_idx
 
     row = 0
     col = 0
@@ -110,7 +116,8 @@ def check_winner(board_arr):
     while row < len(board_arr):
         if board_arr[row][0] == board_arr[row][1] == board_arr[row][2]:
             winner = board_arr[row][0]
-            return winner
+            winner_idx = [[row, 0], [row, 1], [row, 2]]
+            return winner, winner_idx
         else:
             row += 1
 
@@ -118,7 +125,8 @@ def check_winner(board_arr):
     while col < len(board_arr):
         if board_arr[0][col] == board_arr[1][col] == board_arr[2][col]:
             winner = board_arr[0][col]
-            return winner
+            winner_idx = [[0, col], [1, col], [2, col]]
+            return winner, winner_idx
         else:
             col += 1
 
