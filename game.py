@@ -37,7 +37,7 @@ while True:
                 grid_generator()
                 pygame.display.update()
 
-            if check_winner():
+            if check_winner(board):
                 game_finished = True
 
             pygame.display.update()

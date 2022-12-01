@@ -95,5 +95,31 @@ def add_movement(main_board=None, g_board=None, turn=player):
     return board, turn
 
 
-def check_winner():
-    pass
+def check_winner(board_arr):
+    """Given a board array of [row][cols], checks for 3 of the same input to return winner, if no winner returns None"""
+
+    winner = None
+
+    if board_arr[0][0] == board_arr[1][1] == board_arr[2][2] or board_arr[0][2] == board_arr[1][1] == board_arr[2][0]:
+        winner = board_arr[0][0]
+        return winner
+
+    row = 0
+    col = 0
+    # Checks rows
+    while row < len(board_arr):
+        if board_arr[row][0] == board_arr[row][1] == board_arr[row][2]:
+            winner = board_arr[row][0]
+            return winner
+        else:
+            row += 1
+
+    # Checks columns
+    while col < len(board_arr):
+        if board_arr[0][col] == board_arr[1][col] == board_arr[2][col]:
+            winner = board_arr[0][col]
+            return winner
+        else:
+            col += 1
+
+
