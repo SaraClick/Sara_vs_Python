@@ -90,6 +90,18 @@ class TestDraw(unittest.TestCase):
                  ["S", "P", "S"]]
         self.assertEqual(True, draw(board))
 
+    def test_not_draw_1numleft_1(self):
+        board = [[1, "P", "P"],
+                 ["S", "P", "S"],
+                 ["S", "S", "P"]]
+        self.assertEqual(False, draw(board))
+
+    def test_not_draw_1numleft_9(self):
+        board = [["P", "S", "P"],
+                 ["S", "P", "S"],
+                 ["S", "S", 9]]
+        self.assertEqual(False, draw(board))
+
 
 if __name__ == '__main__':
     unittest.main()

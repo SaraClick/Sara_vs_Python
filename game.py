@@ -9,11 +9,11 @@ pygame.init()
 
 def reset():
     """Resets the game afresh for a new start"""
-    board = [[1, 2, 3],
+    reset_board = [[1, 2, 3],
              [4, 5, 6],
              [7, 8, 9]]
 
-    graph_board = [[[None, None], [None, None], [None, None]],
+    reset_graph_board = [[[None, None], [None, None], [None, None]],
                    [[None, None], [None, None], [None, None]],
                    [[None, None], [None, None], [None, None]]]
 
@@ -22,10 +22,11 @@ def reset():
     grid_generator()
     pygame.display.update()
 
-    return board, graph_board
+    return reset_board, reset_graph_board
 
 
 def run(game_board, game_g_board, game_player):
+
     game_finished = False
 
     while True:
@@ -42,15 +43,15 @@ def run(game_board, game_g_board, game_player):
                 game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
                 if game_finished:  # set the game back to blanks
-                    new_board, new_player = reset()
-                    run(new_board, new_player, player)
+                    new_board, new_g_board = reset()
+                    run(new_board, new_g_board, game_player)
 
                 if check_winner(game_board):
                     winner, winner_idx = check_winner(game_board)
                     replace_winner_img(winner, winner_idx, game_g_board)
                     game_finished = True
 
-                if draw(board):
+                if draw(game_board):
                     game_finished = True
 
                 pygame.display.update()

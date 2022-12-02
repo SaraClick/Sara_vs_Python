@@ -145,12 +145,16 @@ def replace_winner_img(winner, winner_indexes, game_g_board):
 
 def draw(game_board):
     """Given a board array of game plays, returns True if there are no more moves and no winner, otherwise False"""
-    if not check_winner(game_board):
+    is_draw = True
+
+    if check_winner(game_board):
+        is_draw = False
+
+    else:
         for row in range(len(game_board)):
             for col in range(len(game_board)):
                 item = str(game_board[row][col])
                 if item.isdigit():
-                    return False
-                return True
-    return False
+                    is_draw = False
 
+    return is_draw
