@@ -49,8 +49,8 @@ def run(game_board, game_g_board, game_player):
                     replace_winner_img(winner, winner_idx, game_g_board)
                     game_finished = True
 
-                # if draw(board):
-                #     game_finished = True
+                if draw(board):
+                    game_finished = True
 
                 pygame.display.update()
 
