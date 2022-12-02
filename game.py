@@ -7,7 +7,26 @@ from utils import board, graph_board, grid_generator, color_background, screen, 
 pygame.init()
 
 
-def run(board, graph_board, player, game_finished=False):
+def reset():
+    board = [[1, 2, 3],
+             [4, 5, 6],
+             [7, 8, 9]]
+
+    graph_board = [[[None, None], [None, None], [None, None]],
+                   [[None, None], [None, None], [None, None]],
+                   [[None, None], [None, None], [None, None]]]
+
+    screen.fill(color_background)
+    pygame.display.update()
+    grid_generator()
+    pygame.display.update()
+
+    return board, graph_board
+
+
+def run(game_board, game_g_board, game_player):
+    game_finished = False
+
     while True:
         grid_generator()
         pygame.display.update()
@@ -19,31 +38,19 @@ def run(board, graph_board, player, game_finished=False):
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                board, player = add_movement(board, graph_board, player)
+                game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
                 if game_finished:  # set the game back to blanks
-                    board = [[1, 2, 3],
-                             [4, 5, 6],
-                             [7, 8, 9]]
+                    new_board, new_player = reset()
+                    run(new_board, new_player, player)
 
-                    graph_board = [[[None, None], [None, None], [None, None]],
-                                   [[None, None], [None, None], [None, None]],
-                                   [[None, None], [None, None], [None, None]]]
-
-                    game_finished = False
-
-                    screen.fill(color_background)
-                    pygame.display.update()
-                    grid_generator()
-                    pygame.display.update()
-
-                if check_winner(board):
-                    winner, winner_idx = check_winner(board)
-                    replace_winner_img(winner, winner_idx)
+                if check_winner(game_board):
+                    winner, winner_idx = check_winner(game_board)
+                    replace_winner_img(winner, winner_idx, game_g_board)
                     game_finished = True
 
-                if draw(board):
-                    game_finished = True
+                # if draw(board):
+                #     game_finished = True
 
                 pygame.display.update()
 

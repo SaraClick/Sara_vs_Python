@@ -41,21 +41,19 @@ def grid_generator(screen_max=width, box_size=round((width/3))):
 
 
 # Rendering board function
-def render_board(main_board=None, s_img=sara, p_img=python):
+def render_board(game_board, game_g_board):
     """Given position of mouse click within the board returns the [row][col] equivalent index within board"""
-    if main_board is None:  # this is due to main_board being a mutable object
-        main_board = board
     for i in range(3):
         for j in range(3):
-            if main_board[i][j] == "S":
+            if game_board[i][j] == "S":
                 # REFERENCE: graph_board[row][col][0] is the image, graph_board[row][col][1] is the center of the box
-                graph_board[i][j][0] = s_img
-                graph_board[i][j][1] = s_img.get_rect(center=(j*200+100, i*200+100))
+                game_g_board[i][j][0] = sara
+                game_g_board[i][j][1] = sara.get_rect(center=(j*200+100, i*200+100))
                 # center = center within the square cell
                 # 600/3/2 = 100 for i=1 j=1 // 300 for i=1 j=1 // 500 for i=2 j=2
-            elif main_board[i][j] == "P":
-                graph_board[i][j][0] = p_img
-                graph_board[i][j][1] = p_img.get_rect(center=(j*200+100, i*200+100))
+            elif game_board[i][j] == "P":
+                game_g_board[i][j][0] = python
+                game_g_board[i][j][1] = python.get_rect(center=(j*200+100, i*200+100))
                 # center = center within the square cell
                 # 600/3/2 = 100 for i=1 j=1 // 300 for i=1 j=1 // 500 for i=2 j=2
 
@@ -71,88 +69,84 @@ def convert_pos_to_idx(position):  # position is a tuple (x,y) obtained with pyg
 
 
 # Create mouse input
-def add_movement(main_board=None, g_board=None, turn=player):
+def add_movement(game_board, game_g_board, game_player):
     """Given a user click, assigns the box selection to the player, renders updated board and returns board & player"""
-    if main_board is None:
-        main_board = board
-    if g_board is None:
-        g_board = graph_board
     mouse_position = pygame.mouse.get_pos()
     row, col = convert_pos_to_idx(mouse_position)
-    if main_board[row][col] != 'S' and main_board[row][col] != 'P':
-        main_board[row][col] = turn
-        if turn == 'S':
-            turn = 'P'
+    if game_board[row][col] != "S" and game_board[row][col] != "P":
+        game_board[row][col] = game_player
+        if game_player == "S":
+            game_player = "P"
         else:
-            turn = 'S'
+            game_player = "S"
 
-    render_board(main_board, sara, python)  # updates the movement to the graph_board
+    render_board(game_board, game_g_board)  # updates the movement to the graph_board
 
     # Display the sara/python images on top of the board
     for i in range(3):
         for j in range(3):
-            if g_board[i][j][0] is not None:
-                screen.blit(g_board[i][j][0], g_board[i][j][1])
+            if game_g_board[i][j][0] is not None:
+                screen.blit(game_g_board[i][j][0], game_g_board[i][j][1])
 
-    return board, turn
+    return game_board, game_player
 
 
-def check_winner(board_arr):
+def check_winner(game_board):
     """Given a board array of [row][cols], checks for 3 of the same input to return winner, if no winner returns None"""
 
     winner = None
     winner_idx = None
 
-    if board_arr[0][0] == board_arr[1][1] == board_arr[2][2]:
-        winner = board_arr[1][1]
+    if game_board[0][0] == game_board[1][1] == game_board[2][2]:
+        winner = game_board[1][1]
         winner_idx = [[0, 0], [1, 1], [2, 2]]
         return winner, winner_idx
-    if board_arr[0][2] == board_arr[1][1] == board_arr[2][0]:
-        winner = board_arr[1][1]
+    if game_board[0][2] == game_board[1][1] == game_board[2][0]:
+        winner = game_board[1][1]
         winner_idx = [[0, 2], [1, 1], [2, 0]]
         return winner, winner_idx
 
     row = 0
     col = 0
     # Checks rows
-    while row < len(board_arr):
-        if board_arr[row][0] == board_arr[row][1] == board_arr[row][2]:
-            winner = board_arr[row][0]
+    while row < len(game_board):
+        if game_board[row][0] == game_board[row][1] == game_board[row][2]:
+            winner = game_board[row][0]
             winner_idx = [[row, 0], [row, 1], [row, 2]]
             return winner, winner_idx
         else:
             row += 1
 
     # Checks columns
-    while col < len(board_arr):
-        if board_arr[0][col] == board_arr[1][col] == board_arr[2][col]:
-            winner = board_arr[0][col]
+    while col < len(game_board):
+        if game_board[0][col] == game_board[1][col] == game_board[2][col]:
+            winner = game_board[0][col]
             winner_idx = [[0, col], [1, col], [2, col]]
             return winner, winner_idx
         else:
             col += 1
 
 
-def replace_winner_img(winner, winner_indexes):
+def replace_winner_img(winner, winner_indexes, game_g_board):
     img_winner = sara_win
     if winner == "P":
         img_winner = python_win
 
     for idx in winner_indexes:
-        graph_board[idx[0]][idx[1]][0] = img_winner
+        game_g_board[idx[0]][idx[1]][0] = img_winner
 
     # Display the updated images on the board
     for i in range(3):
         for j in range(3):
-            if graph_board[i][j][0] is not None:
-                screen.blit(graph_board[i][j][0], graph_board[i][j][1])
+            if game_g_board[i][j][0] is not None:
+                screen.blit(game_g_board[i][j][0], game_g_board[i][j][1])
 
 
-def draw(board_arr):
-    if not check_winner(board_arr):
-        for row in range(len(board_arr)):
-            for col in range(len(board_arr)):
-                item = str(board_arr[row][col])
+def draw(game_board):
+    if not check_winner(game_board):
+        for row in range(len(game_board)):
+            for col in range(len(game_board)):
+                item = str(game_board[row][col])
                 if item.isdigit():
                     return False
                 return True
