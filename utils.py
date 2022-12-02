@@ -128,6 +128,7 @@ def check_winner(game_board):
 
 
 def replace_winner_img(winner, winner_indexes, game_g_board):
+    """Given a winner and the idx where winner combination is located, replaces the image on these locations"""
     img_winner = sara_win
     if winner == "P":
         img_winner = python_win
@@ -143,6 +144,7 @@ def replace_winner_img(winner, winner_indexes, game_g_board):
 
 
 def draw(game_board):
+    """Given a board array of game plays, returns True if there are no more moves and no winner, otherwise False"""
     if not check_winner(game_board):
         for row in range(len(game_board)):
             for col in range(len(game_board)):
