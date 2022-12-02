@@ -94,9 +94,6 @@ def add_movement(game_board, game_g_board, game_player):
 def check_winner(game_board):
     """Given a board array of [row][cols], checks for 3 of the same input to return winner, if no winner returns None"""
 
-    winner = None
-    winner_idx = None
-
     if game_board[0][0] == game_board[1][1] == game_board[2][2]:
         winner = game_board[1][1]
         winner_idx = [[0, 0], [1, 1], [2, 2]]
