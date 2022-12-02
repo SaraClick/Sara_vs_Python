@@ -152,8 +152,9 @@ def draw(board_arr):
     if not check_winner(board_arr):
         for row in range(len(board_arr)):
             for col in range(len(board_arr)):
-                item = board_arr[row][col]
-                if item.isalpha():
-                    return True
+                item = str(board_arr[row][col])
+                if item.isdigit():
+                    return False
+                return True
     return False
 

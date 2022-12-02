@@ -1,7 +1,7 @@
 import pygame
 import sys
 from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner, \
-    replace_winner_img
+    replace_winner_img, draw
 
 
 pygame.init()
@@ -40,6 +40,9 @@ def run(board, graph_board, player, game_finished=False):
                 if check_winner(board):
                     winner, winner_idx = check_winner(board)
                     replace_winner_img(winner, winner_idx)
+                    game_finished = True
+
+                if draw(board):
                     game_finished = True
 
                 pygame.display.update()
