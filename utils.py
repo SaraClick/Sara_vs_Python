@@ -148,6 +148,12 @@ def replace_winner_img(winner, winner_indexes):
                 screen.blit(graph_board[i][j][0], graph_board[i][j][1])
 
 
-
-
+def draw(board_arr):
+    if not check_winner(board_arr):
+        for row in range(len(board_arr)):
+            for col in range(len(board_arr)):
+                item = board_arr[row][col]
+                if item.isalpha():
+                    return True
+    return False
 

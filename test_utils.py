@@ -1,5 +1,5 @@
 import unittest
-from utils import convert_pos_to_idx, check_winner
+from utils import convert_pos_to_idx, check_winner, draw
 
 
 class TestConvertPositionToIndex(unittest.TestCase):
@@ -57,6 +57,39 @@ class TestCheckWinner(unittest.TestCase):
                  [4, 5, 6],
                  [5, 8, 9]]
         self.assertEqual(None, check_winner(board))
+
+
+class TestDraw(unittest.TestCase):
+    def test_not_draw_winnerP(self):
+        board = [["P", "P", "P"],
+                 ["S", 5, 6],
+                 ["S", 8, 9]]
+        self.assertEqual(False, draw(board))
+
+    def test_not_draw_winnerS(self):
+        board = [["S", "P", "P"],
+                 ["S", 5, 6],
+                 ["S", 8, 9]]
+        self.assertEqual(False, draw(board))
+
+    def test_not_draw_winnerS_full_board(self):
+        board = [["S", "P", "P"],
+                 ["S", "P", "S"],
+                 ["S", "S", "P"]]
+        self.assertEqual(False, draw(board))
+
+    def test_not_draw_winnerP_full_board(self):
+        board = [["P", "P", "P"],
+                 ["S", "P", "S"],
+                 ["S", "S", "P"]]
+        self.assertEqual(False, draw(board))
+
+    def test_draw(self):
+        board = [["P", "S", "P"],
+                 ["S", "P", "S"],
+                 ["S", "P", "S"]]
+        self.assertEqual(True, draw(board))
+
 
 if __name__ == '__main__':
     unittest.main()
