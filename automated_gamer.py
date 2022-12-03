@@ -1,29 +1,45 @@
 # Identify risk combinations: 2 lined "S" in the same row/col/diagonal
 
-def win_combinations(game_board):
-    combinations = []
+idx_board = [[[0, 0], [0, 1], [0, 2]],
+             [[1, 0], [1, 1], [1, 2]],
+             [[2, 0], [2, 1], [2, 2]]]
 
+board = [[1, 2, 3],
+         [4, 5, 6],
+         [7, 8, 9]]
+
+
+def win_combinations(game_board, idx_board):
+    """Given a board with possible pay positions and idx_board with the location indexes for row,col, returns
+    dictionary with number of winner combinations as key and a list [winner combination, winner index locations] as
+    values"""
+    combinations = {}
+    count = 1
     # ROWS CHECK
-    for row in game_board:
-        combinations.append(row)
+    for row in range(3):
+        combinations[count] = [game_board[row], idx_board[row]]
+        count += 1
 
-    # COLUMNS CHECK
+    # ROW CHECK
     col = 0
-    column = []
     while col <= 2:
-        while len(column) < 3:
-            for row in range(3):
-                column.append(game_board[row][col])
-            combinations.append(column)
         column = []
+        column_idx = []
+        for row in range(3):
+            column.append(game_board[row][col])
+            column_idx.append([row, col])
+        combinations[count] = [column, column_idx]
         col += 1
+        count += 1
 
     # DIAGONAL CHECKS
-    combinations.append([game_board[0][0], game_board[1][1], game_board[2][2]])
-    combinations.append([game_board[0][2], game_board[1][1], game_board[2][0]])
+    combinations[count] = [[game_board[0][0], game_board[1][1], game_board[2][2]],
+                           [idx_board[0][0], idx_board[1][1], idx_board[2][2]]]
+    count += 1
+    combinations[count] = [[game_board[0][2], game_board[1][1], game_board[2][0]],
+                           [idx_board[0][2], idx_board[1][1], idx_board[2][0]]]
 
     return combinations
-
 
 
 
