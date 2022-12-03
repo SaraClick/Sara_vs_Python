@@ -5,6 +5,7 @@ board = [[1, 2, 3],
          [4, 5, 6],
          [7, 8, 9]]
 
+
 class TestWinCombinations(unittest.TestCase):
     def test_empty_board(self):
         result = {1: [[1, 2, 3], [[0, 0], [0, 1], [0, 2]]],
@@ -56,24 +57,19 @@ class TestMovesAligned(unittest.TestCase):
         self.assertEqual((["S", 5, 7], [[0, 2], [1, 1], [2, 0]]), moves_aligned("S", 1, board_test, idx_board))
 
     def test_2S_1empty_diagonal(self):
-        # should ignore row 2 where ["S", 5, "P"] because S cannot make a line there anymore
-        # should ignore col 2 where ["P", "S", 7] because S cannot make a line there anymore
+        # should ignore row 2 where ["S", "S", "P"] because S cannot make a line there anymore
         board_test = [["P", 2, "S"],
                       ["S", "S", "P"],
                       [7, 8, "P"]]
         self.assertEqual((["S", "S", 7], [[0, 2], [1, 1], [2, 0]]), moves_aligned("S", 2, board_test, idx_board))
 
     def test_2S_1empty_one_movement_left(self):
-        # should ignore row 2 where ["S", 5, "P"] because S cannot make a line there anymore
-        # should ignore col 2 where ["P", "S", 7] because S cannot make a line there anymore
         board_test = [["P", 2, "S"],
                       ["S", "S", "P"],
                       ["P", "S", "P"]]
         self.assertEqual(([2, "S", "S"], [[0, 1], [1, 1], [2, 1]]), moves_aligned("S", 2, board_test, idx_board))
 
     def test_no_movements_left(self):
-        # should ignore row 2 where ["S", 5, "P"] because S cannot make a line there anymore
-        # should ignore col 2 where ["P", "S", 7] because S cannot make a line there anymore
         board_test = [["P", "P", "S"],
                       ["S", "S", "P"],
                       ["P", "S", "P"]]
