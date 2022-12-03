@@ -10,12 +10,12 @@ pygame.init()
 def reset():
     """Resets the game afresh for a new start"""
     reset_board = [[1, 2, 3],
-             [4, 5, 6],
-             [7, 8, 9]]
+                   [4, 5, 6],
+                   [7, 8, 9]]
 
     reset_graph_board = [[[None, None], [None, None], [None, None]],
-                   [[None, None], [None, None], [None, None]],
-                   [[None, None], [None, None], [None, None]]]
+                         [[None, None], [None, None], [None, None]],
+                         [[None, None], [None, None], [None, None]]]
 
     screen.fill(color_background)
     pygame.display.update()
