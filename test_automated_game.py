@@ -1,5 +1,5 @@
 import unittest
-from automated_gamer import win_combinations, idx_board, moves_aligned
+from automated_gamer import win_combinations, idx_board, moves_aligned, automated_player
 
 board = [[1, 2, 3],
          [4, 5, 6],
@@ -76,7 +76,79 @@ class TestMovesAligned(unittest.TestCase):
         self.assertEqual(False, moves_aligned("S", 2, board_test, idx_board))
 
 
+class TestAutomatedPlayer(unittest.TestCase):
+    def test_2S_1P_col(self):
+        board_test = [[1, 2, 3],
+                      ["S", 5, 6],
+                      ["S", 8, "P"]]
+        self.assertEqual([0, 0], automated_player(board_test, idx_board))
 
+    def test_2S_1P_diag(self):
+        board_test = [["P", 2, "S"],
+                      ["S", 5, 6],
+                      ["S", 8, "P"]]
+        self.assertEqual([1, 1], automated_player(board_test, idx_board))
+
+    def test_2S_1P_row(self):
+        board_test = [["P", 2, 3],
+                      ["S", 5, "P"],
+                      ["S", 8, "S"]]
+        self.assertEqual([2, 1], automated_player(board_test, idx_board))
+
+    def test_2P_1S_col(self):
+        board_test = [[1, 2, "P"],
+                      [4, 5, 6],
+                      ["S", "S", "P"]]
+        self.assertEqual([1, 2], automated_player(board_test, idx_board))
+
+    def test_2P_1S_row(self):
+        board_test = [["P", 2, "P"],
+                      [4, 5, "S"],
+                      ["S", "S", "P"]]
+        self.assertEqual([0, 1], automated_player(board_test, idx_board))
+
+    def test_2P_1S_diag(self):
+        board_test = [["P", "S", "P"],
+                      [4, 5, "S"],
+                      ["S", "P", "P"]]
+        self.assertEqual([1, 1], automated_player(board_test, idx_board))
+
+    def test_empty_board_generates_random_coordinates(self):
+        board_test = [[1, 2, 3],
+                      [4, 5, 6],
+                      [7, 8, 9]]
+        self.assertEqual((2, list),
+                         (len(automated_player(board_test, idx_board)),  # checks that we have 2 items in list
+                          type(automated_player(board_test, idx_board))))  # checks the return is a list
+
+    def test_1S_0P_generates_random_coordinates(self):
+        board_test = [[1, 2, 3],
+                      [4, "S", 6],
+                      [7, 8, 9]]
+        p_coordinates = automated_player(board_test, idx_board)
+        self.assertEqual((2, list, False),
+                         (len(p_coordinates),  # checks that we have 2 items in list
+                          type(p_coordinates),  # checks the return is a list
+                          [1, 1] == p_coordinates))  # to ensure is not "S" coordinates [1,1]
+
+    def test_1S_0P_generates_random_coordinates_test2(self):
+        board_test = [[1, "P", 3],
+                      [4, "S", 6],
+                      [7, "S", 9]]
+        p_coordinates = automated_player(board_test, idx_board)
+        self.assertEqual((2, list, False, False),
+                         (len(p_coordinates),  # checks that we have 2 items in list
+                          type(p_coordinates),  # checks the return is a list
+                          [1, 1] == p_coordinates,  # to ensure is not "S" coordinates [1,1]
+                          [2, 1] == p_coordinates))  # to ensure is not "S" coordinates [1,1]
+
+    def test_1P_0S_Pmoves_to_2_or_8(self):
+        board_test = [["S", 2, "P"],
+                      ["P", "P", "S"],
+                      ["S", 8, 9]]
+        p_coordinates = automated_player(board_test, idx_board)
+        possibilities = [[0, 1], [1, 2]]
+        self.assertEqual(True, any(p_coordinates for x in possibilities))  # check if the coordinates are in possibilites
 
 
 if __name__ == '__main__':

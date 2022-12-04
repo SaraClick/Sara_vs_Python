@@ -1,3 +1,4 @@
+import random
 # Identify risk combinations: 2 lined "S" in the same row/col/diagonal
 
 idx_board = [[[0, 0], [0, 1], [0, 2]],
@@ -69,9 +70,63 @@ def moves_aligned(player_to_check, num_moves, game_board, idx_board):
             checks += 1
     return False
 
-# If risk combination is identified, move into the risk box to avoid "S" win
-# If no risk combination is identified, check if "P" has any potential winning combinations
-# If "P" has a potential winning combination, use "P" turn to move into that box
-# Identify possible box that could in the future allow "P" to win
-# If any possible box, move "P" there
-# Else, random move to any empty cell
+
+def _random_move_selector(game_board):
+    """Given a board, return a random move list [row, col] indexes"""
+    row_col = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
+    empty_idx = []
+    for row in game_board:
+        for item in row:
+            if str(item).isdigit():
+                empty_idx.append(item - 1)
+
+    random_idx = random.choice(empty_idx)
+
+    return row_col[random_idx]
+
+
+def _selector_coordinates(combinations, combinations_idx):
+    idx_row_col = []
+    for i in range(3):
+        if str(combinations[i]).isdigit():
+            idx_row_col = i
+    return combinations_idx[idx_row_col]
+
+
+def automated_player(game_board, idx_board):
+    # If a potential winner combination with 2 moves can let the payer win, move into that position
+    if moves_aligned("P", 2, game_board, idx_board):
+        comb, idx_comb = moves_aligned("P", 2, game_board, idx_board)
+        return _selector_coordinates(comb, idx_comb)
+
+    # If risk combination is identified, move into the risk box to avoid "S" win
+    elif moves_aligned("S", 2, game_board, idx_board):
+        comb, idx_comb = moves_aligned("S", 2, game_board, idx_board)
+        return _selector_coordinates(comb, idx_comb)
+
+    # If board is empty, select a box randomly
+    elif not moves_aligned("S", 1, game_board, idx_board) and not moves_aligned("P", 1, game_board, idx_board):
+        return _random_move_selector(game_board)
+
+    # if we have at 1 move aligned on S and either 1 or none for P, random for python to either move into an
+    # aligned position for Python or block the other player
+    elif (not moves_aligned("P", 1, game_board, idx_board) and moves_aligned("S", 1, game_board, idx_board)) or \
+            (moves_aligned("P", 1, game_board, idx_board) and moves_aligned("S", 1, game_board, idx_board)):
+        # Detect the move to block S from winning
+        sara_align = moves_aligned("S", 1, game_board, idx_board)
+        sara_block = _selector_coordinates(sara_align[0], sara_align[1])
+        # Select a random move without specific intention of blocking S
+        random_move = _random_move_selector(game_board)
+
+        # Chose randomly from blocking S or a random move
+        possible_moves = [sara_block, random_move]
+        return random.choice(possible_moves)
+
+    # if we have 1 move aligned for Python and none for S, Python moves to get 2 aligned
+    elif moves_aligned("P", 1, game_board, idx_board) and not moves_aligned("S", 1, game_board, idx_board):
+        comb, idx_comb = moves_aligned("P", 1, game_board, idx_board)
+        return _selector_coordinates(comb, idx_comb)
+
+    else:
+        return _random_move_selector(game_board)
+
