@@ -1,4 +1,6 @@
+import itertools
 import random
+from itertools import chain
 # Identify risk combinations: 2 lined "S" in the same row/col/diagonal
 
 idx_board = [[[0, 0], [0, 1], [0, 2]],
@@ -69,6 +71,17 @@ def moves_aligned(player_to_check, num_moves, game_board, idx_board):
             count_empty = 0
             checks += 1
     return False
+
+
+def movements_left(game_board):
+    board_movements = []
+    for item in game_board:
+        board_movements.extend(item)
+    for item in board_movements:
+        if str(item).isdigit():
+            return True
+    else:
+        return False
 
 
 def _random_move_selector(game_board):
