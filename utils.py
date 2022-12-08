@@ -1,4 +1,5 @@
 import pygame
+from automated_gamer import automated_player, idx_board
 
 player = "S"
 
@@ -68,17 +69,28 @@ def convert_pos_to_idx(position):  # position is a tuple (x,y) obtained with pyg
     return row_idx, col_idx
 
 
+def switch_player(player1, player2, game_player):
+    """Given game_player, it switches to the other player and returns it"""
+    if game_player == player1:
+        game_player = player2
+    else:
+        game_player = player1
+    return game_player
+
+
 # Create mouse input
 def add_movement(game_board, game_g_board, game_player):
     """Given a user click, assigns the box selection to the player, renders updated board and returns board & player"""
-    mouse_position = pygame.mouse.get_pos()
-    row, col = convert_pos_to_idx(mouse_position)
+    if game_player == "S":
+        mouse_position = pygame.mouse.get_pos()
+        row, col = convert_pos_to_idx(mouse_position)
+
+    if game_player == "P":
+        row, col = automated_player(game_board, idx_board)
+
     if game_board[row][col] != "S" and game_board[row][col] != "P":
         game_board[row][col] = game_player
-        if game_player == "S":
-            game_player = "P"
-        else:
-            game_player = "S"
+        game_player = switch_player("S", "P", game_player)
 
     render_board(game_board, game_g_board)  # updates the movement to the graph_board
 
