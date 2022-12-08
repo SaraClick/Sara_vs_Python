@@ -8,7 +8,7 @@ from automated_gamer import movements_left
 pygame.init()
 
 
-def reset():
+def _reset_boards():
     """Resets the game afresh for a new start"""
     reset_board = [[1, 2, 3],
                    [4, 5, 6],
@@ -26,6 +26,34 @@ def reset():
     return reset_board, reset_graph_board
 
 
+def reset_game(game_player):
+    new_board, new_g_board = _reset_boards()
+    run(new_board, new_g_board, game_player)
+
+
+def end_game_check(game_finished, game_board, game_g_board, game_player):
+    """Given if game is finished, game boards and player, returns player and True if game has a winner or is draw"""
+
+    if check_winner(game_board):
+        winner, winner_idx = check_winner(game_board)
+        replace_winner_img(winner, winner_idx, game_g_board)
+        pygame.display.update()
+        pygame.time.delay(800)
+        # The below if statement ensures that the loser will always have first move in the next game
+        if winner == "S":
+            game_player = "P"
+        else:
+            game_player = "S"
+        game_finished = True
+
+    if draw(game_board):
+        pygame.display.update()
+        pygame.time.delay(600)
+        game_finished = True
+
+    return game_finished, game_player
+
+
 def run(game_board, game_g_board, game_player):
 
     game_finished = False
@@ -41,52 +69,19 @@ def run(game_board, game_g_board, game_player):
                 sys.exit()
 
             if game_player == "S":
-
-                if game_finished: # set the game back to blanks
-                    pygame.time.delay(800)
-                    new_board, new_g_board = reset()
-                    run(new_board, new_g_board, game_player)
-                    switch_player("S", "P", game_player)
-
-                if check_winner(game_board):
-                    winner, winner_idx = check_winner(game_board)
-                    replace_winner_img(winner, winner_idx, game_g_board)
-                    game_finished = True
-
-                if draw(game_board):
-                    game_finished = True
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
-                pygame.display.update()
+            else:  # if game_player == "P":
+                pygame.time.delay(600)
+                game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
-            if game_player == "P":
-                pygame.time.delay(800)
+            game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
 
-                if movements_left(game_board) and not game_finished:
-                    game_board, game_player = add_movement(game_board, game_g_board, game_player)
+            if game_finished:
+                reset_game(game_player)
 
-                else:
-                    # if event.type == pygame.MOUSEBUTTONDOWN:
-                    pygame.time.delay(800)
-                    new_board, new_g_board = reset()
-                    run(new_board, new_g_board, game_player)
-
-                if game_finished:  # set the game back to blanks
-                    new_board, new_g_board = reset()
-                    run(new_board, new_g_board, game_player)
-                    game_player = switch_player("S", "P", game_player)
-
-                if check_winner(game_board):
-                    winner, winner_idx = check_winner(game_board)
-                    replace_winner_img(winner, winner_idx, game_g_board)
-                    game_finished = True
-
-                if draw(game_board):
-                    game_finished = True
-
-                pygame.display.update()
+            pygame.display.update()
 
 
 run(board, graph_board, player)
