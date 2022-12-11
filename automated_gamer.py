@@ -1,6 +1,4 @@
-import itertools
 import random
-from itertools import chain
 # Identify risk combinations: 2 lined "S" in the same row/col/diagonal
 
 idx_board = [[[0, 0], [0, 1], [0, 2]],

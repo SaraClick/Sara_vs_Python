@@ -24,8 +24,8 @@ python_win = pygame.image.load("files/python_win.png")
 # Define screen, grid and caption
 size = width, height = 600, 600
 grid_width = 4
-color_background = (239, 246, 191)
-color_board = (0, 0, 0)
+color_background = (250, 253, 205)
+color_board = (163, 163, 172)
 pygame.display.set_caption("Sara vs Python!")
 
 

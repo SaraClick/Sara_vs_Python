@@ -1,9 +1,7 @@
 import pygame
 import sys
 from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner, \
-    replace_winner_img, draw, switch_player
-from automated_gamer import movements_left
-
+    replace_winner_img, draw
 
 pygame.init()
 
