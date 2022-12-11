@@ -74,12 +74,13 @@ async def main(game_board, game_g_board, game_player):
                 game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
             game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
+            pygame.display.update()
 
             if game_finished:
+                pygame.time.delay(600)
                 new_board, new_g_board = _reset_boards()
                 await main(new_board, new_g_board, game_player)
 
-            pygame.display.update()
 
 
 asyncio.run(main(board, graph_board, player))
