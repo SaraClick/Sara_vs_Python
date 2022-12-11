@@ -1,8 +1,9 @@
 import pygame
 import sys
+import asyncio
 
 from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner, \
-    replace_winner_img, draw
+    replace_winner_img, draw, first_movement
 
 pygame.init()
 
@@ -25,11 +26,6 @@ def _reset_boards():
     return reset_board, reset_graph_board
 
 
-def reset_game(game_player):
-    new_board, new_g_board = _reset_boards()
-    run(new_board, new_g_board, game_player)
-
-
 def end_game_check(game_finished, game_board, game_g_board, game_player):
     """Given if game is finished, game boards and player, returns player and True if game has a winner or is drawn"""
 
@@ -37,7 +33,7 @@ def end_game_check(game_finished, game_board, game_g_board, game_player):
         winner, winner_idx = check_winner(game_board)
         replace_winner_img(winner, winner_idx, game_g_board)
         pygame.display.update()
-        pygame.time.delay(800)
+        pygame.time.delay(600)
         # The below if statement ensures that the loser will always have the fist move in the next game
         if winner == "S":
             game_player = "P"
@@ -53,11 +49,12 @@ def end_game_check(game_finished, game_board, game_g_board, game_player):
     return game_finished, game_player
 
 
-def run(game_board, game_g_board, game_player):
+async def main(game_board, game_g_board, game_player):
 
     game_finished = False
 
     while True:
+        await asyncio.sleep(0)
         grid_generator()
         pygame.display.update()
 
@@ -67,21 +64,22 @@ def run(game_board, game_g_board, game_player):
                 pygame.quit()
                 sys.exit()
 
-            if not game_finished:
-                if game_player == "S":
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        game_board, game_player = add_movement(game_board, game_g_board, game_player)
-
-                else:  # if game_player == "P":
-                    pygame.time.delay(600)
+            if game_player == "S":
+                if event.type == pygame.MOUSEBUTTONDOWN:
                     game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
-                game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
+            else:  # if game_player == "P":
+                if not first_movement(game_board):
+                    pygame.time.delay(600)
+                game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
-            else:
-                reset_game(game_player)
+            game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
+
+            if game_finished:
+                new_board, new_g_board = _reset_boards()
+                await main(new_board, new_g_board, game_player)
 
             pygame.display.update()
 
 
-run(board, graph_board, player)
+asyncio.run(main(board, graph_board, player))
