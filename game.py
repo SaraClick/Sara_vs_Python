@@ -1,5 +1,6 @@
 import pygame
 import sys
+
 from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner, \
     replace_winner_img, draw
 
@@ -30,14 +31,14 @@ def reset_game(game_player):
 
 
 def end_game_check(game_finished, game_board, game_g_board, game_player):
-    """Given if game is finished, game boards and player, returns player and True if game has a winner or is draw"""
+    """Given if game is finished, game boards and player, returns player and True if game has a winner or is drawn"""
 
     if check_winner(game_board):
         winner, winner_idx = check_winner(game_board)
         replace_winner_img(winner, winner_idx, game_g_board)
         pygame.display.update()
         pygame.time.delay(800)
-        # The below if statement ensures that the loser will always have first move in the next game
+        # The below if statement ensures that the loser will always have the fist move in the next game
         if winner == "S":
             game_player = "P"
         else:
@@ -66,17 +67,18 @@ def run(game_board, game_g_board, game_player):
                 pygame.quit()
                 sys.exit()
 
-            if game_player == "S":
-                if event.type == pygame.MOUSEBUTTONDOWN:
+            if not game_finished:
+                if game_player == "S":
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        game_board, game_player = add_movement(game_board, game_g_board, game_player)
+
+                else:  # if game_player == "P":
+                    pygame.time.delay(600)
                     game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
-            else:  # if game_player == "P":
-                pygame.time.delay(600)
-                game_board, game_player = add_movement(game_board, game_g_board, game_player)
+                game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
 
-            game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
-
-            if game_finished:
+            else:
                 reset_game(game_player)
 
             pygame.display.update()
