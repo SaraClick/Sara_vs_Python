@@ -38,7 +38,7 @@
 ---
 
 #### 🎮 PLAY THE GAME 
-The game has been published on itch.io so users can try it on. 
+The game has been published on itch.io so users can try it on (computer/laptops only). 
 
 **How to play?**
 
