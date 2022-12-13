@@ -78,6 +78,16 @@ def switch_player(player1, player2, game_player):
     return game_player
 
 
+def first_move(game_board):
+    for row in game_board:
+        for item in row:
+            if str(item).isdigit():
+                continue
+            else:
+                return False
+    return True
+
+
 # Create mouse input
 def add_movement(game_board, game_g_board, game_player):
     """Given a user click, assigns the box selection to the player, renders updated board and returns board & player"""
