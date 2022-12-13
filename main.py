@@ -1,7 +1,6 @@
 import asyncio
 import pygame
 import sys
-import asyncio
 
 
 from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner, \
@@ -77,13 +76,6 @@ async def main(game_board, game_g_board, game_player):
                 game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
             game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
-
-            if game_finished:
-                new_board, new_g_board = _reset_boards()
-                await main(new_board, new_g_board, game_player)
-
-            game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
-
 
             if game_finished:
                 pygame.time.delay(600)
