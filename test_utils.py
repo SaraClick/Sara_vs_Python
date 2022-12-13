@@ -1,5 +1,5 @@
 import unittest
-from utils import convert_pos_to_idx, check_winner, draw
+from utils import convert_pos_to_idx, check_winner, draw, first_movement
 
 
 class TestConvertPositionToIndex(unittest.TestCase):
@@ -101,6 +101,26 @@ class TestDraw(unittest.TestCase):
                  ["S", "P", "S"],
                  ["S", "S", 9]]
         self.assertEqual(False, draw(board))
+
+
+class TestFirstMove(unittest.TestCase):
+    def test_not_first_move_test1(self):
+        board = [["P", "P", "P"],
+                 ["S", 5, 6],
+                 ["S", 8, 9]]
+        self.assertEqual(False, first_movement(board))
+
+    def test_not_first_move_test2(self):
+        board = [[1, 2, 3],
+                 [4, 5, 6],
+                 [5, 8, "S"]]
+        self.assertEqual(False, first_movement(board))
+
+    def test_first_move(self):
+        board = [[1, 2, 3],
+                 [4, 5, 6],
+                 [5, 8, 9]]
+        self.assertEqual(True, first_movement(board))
 
 
 if __name__ == '__main__':

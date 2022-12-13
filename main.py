@@ -1,10 +1,12 @@
 import asyncio
 import pygame
 import sys
+import asyncio
 
 
 from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner, \
     replace_winner_img, draw, first_move
+
 
 pygame.init()
 
@@ -34,7 +36,7 @@ def end_game_check(game_finished, game_board, game_g_board, game_player):
         winner, winner_idx = check_winner(game_board)
         replace_winner_img(winner, winner_idx, game_g_board)
         pygame.display.update()
-        pygame.time.delay(800)
+        pygame.time.delay(600)
         # The below if statement ensures that the loser will always have the fist move in the next game
         if winner == "S":
             game_player = "P"
@@ -55,6 +57,7 @@ async def main(game_board, game_g_board, game_player):
     game_finished = False
 
     while True:
+        await asyncio.sleep(0)
         grid_generator()
         pygame.display.update()
 
@@ -76,6 +79,14 @@ async def main(game_board, game_g_board, game_player):
             game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
 
             if game_finished:
+                new_board, new_g_board = _reset_boards()
+                await main(new_board, new_g_board, game_player)
+
+            game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
+
+
+            if game_finished:
+                pygame.time.delay(600)
                 new_board, new_g_board = _reset_boards()
                 await main(new_board, new_g_board, game_player)
 
