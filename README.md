@@ -4,7 +4,11 @@
 ---
 ### 👀 READ ME
 
-**Sara vs Python** is a tic-tac-toe game representing how I sometimes feel when coding as sometimes:
+----
+
+#### ❓WHAT IS SARA VS PYTHON
+
+**Sara vs Python** is a tic-tac-toe game representing how I can feel when coding as sometimes:
 - I win: yay! I know how to implement something :)
 - Python wins: oh oh... errors ! Python teaches me the way forward!
 - It's a draw: roadblock found, no one wins.... learning time!
@@ -16,6 +20,7 @@
 - Python 3.10 including asyncio (pygbag), pygame, sys, random and unittest
 - PyCharm
 - itch.io for the browser publication
+- Git
 
 ---
 
@@ -26,7 +31,7 @@
 - Python moves have a delay of 600 milliseconds, but 0 delay if it's the first move in a reset board.
 - When Sara/Python win, the winning line is replaced by colored icons (see how cute do the stars look in my hair...? awww)
 - When is a draw, no one wins.
-- If we reach one of the players winning or a draw, the game resets to a clean board. 
+- If we have a winner or a draw, the game resets to a clean board. 
 - When reset, the player to make the first move will be the opposite who made the last move.
 - The user can close the window to finish playing at any time.
 
