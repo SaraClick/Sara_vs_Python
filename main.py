@@ -80,7 +80,7 @@ async def main(game_board, game_g_board, game_player):
             await asyncio.sleep(0)
 
             if game_finished:
-                pygame.time.delay(600)
+                pygame.time.delay(1200)
                 new_board, new_g_board = _reset_boards()
                 await main(new_board, new_g_board, game_player)
 
