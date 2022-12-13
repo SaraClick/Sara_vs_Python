@@ -1,9 +1,11 @@
+import asyncio
 import pygame
 import sys
-import asyncio
+
 
 from utils import board, graph_board, grid_generator, color_background, screen, add_movement, player, check_winner, \
-    replace_winner_img, draw, first_movement
+    replace_winner_img, draw, first_move
+
 
 pygame.init()
 
@@ -69,17 +71,19 @@ async def main(game_board, game_g_board, game_player):
                     game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
             else:  # if game_player == "P":
-                if not first_movement(game_board):
+                if not first_move(game_board):
                     pygame.time.delay(600)
                 game_board, game_player = add_movement(game_board, game_g_board, game_player)
 
             game_finished, game_player = end_game_check(game_finished, game_board, game_g_board, game_player)
             pygame.display.update()
+            await asyncio.sleep(0)
 
             if game_finished:
-                pygame.time.delay(600)
+                pygame.time.delay(1200)
                 new_board, new_g_board = _reset_boards()
                 await main(new_board, new_g_board, game_player)
 
 
-asyncio.run(main(board, graph_board, player))
+if __name__ == "__main__":
+    asyncio.run(main(board, graph_board, player))

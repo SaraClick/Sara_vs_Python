@@ -78,7 +78,7 @@ def switch_player(player1, player2, game_player):
     return game_player
 
 
-def first_movement(game_board):
+def first_move(game_board):
     for row in game_board:
         for item in row:
             if str(item).isdigit():
